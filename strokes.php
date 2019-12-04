@@ -36,82 +36,13 @@ foreach ($lists as $vo) {
     $third_word = mb_substr($vo['name'], 2, 1);
 
     //第二个字
-    $word = Db::name('words')->where('word', $second_word)->find();
-    if (!empty($word)) {
-        $second_strokes = $word['strokes'];
-        switch ($word['radicals']) {
-            case '氵':
-                $second_strokes2 = $second_strokes + 1;
-                break;
-            case '忄':
-                $second_strokes2 = $second_strokes + 1;
-                break;
-            case '钅':
-                $second_strokes2 = $second_strokes + 3;
-                break;
-            case '艹':
-                $second_strokes2 = $second_strokes + 3;
-                break;
-            case '辶':
-                $second_strokes2 = $second_strokes + 4;
-                break;
-            case '扌':
-                $second_strokes2 = $second_strokes + 1;
-                break;
-            case '王':
-                $second_strokes2 = $second_strokes + 1;
-                break;
-            default:
-                $second_strokes2 = $second_strokes;
-                break;
-        }
-    } else {
-        $second_strokes2 = $second_strokes = 0;
-    }
-
+    list($second_strokes, $second_strokes2) = get_word_strokes($second_word);
     //第三个字
-    if (!empty($third_word)) {
-        if ($third_word == $second_word) {
-            $third_strokes = $second_strokes;
-            $third_strokes2 = $second_strokes2;
-        } else {
-            $word = Db::name('words')->where('word', $third_word)->find();
-            if (!empty($word)) {
-                $third_strokes = $word['strokes'];
-                switch ($word['radicals']) {
-                    case '氵':
-                        $third_strokes2 = $third_strokes + 1;
-                        break;
-                    case '忄':
-                        $third_strokes2 = $third_strokes + 1;
-                        break;
-                    case '钅':
-                        $third_strokes2 = $third_strokes + 3;
-                        break;
-                    case '艹':
-                        $third_strokes2 = $third_strokes + 3;
-                        break;
-                    case '辶':
-                        $third_strokes2 = $third_strokes + 4;
-                        break;
-                    case '扌':
-                        $third_strokes2 = $third_strokes + 1;
-                        break;
-                    case '王':
-                        $third_strokes2 = $third_strokes + 1;
-                        break;
-                    default:
-                        $third_strokes2 = $third_strokes;
-                        break;
-                }
-            } else {
-                $third_strokes2 = $third_strokes = 0;
-            }
-        }
+    if ($third_word == $second_word) {
+        list($third_strokes, $third_strokes2) = [$second_strokes, $second_strokes2];
     } else {
-        $third_strokes2 = $third_strokes = 0;
+        list($third_strokes, $third_strokes2) = get_word_strokes($third_word);
     }
-
     Db::name('names')->update([
         'id' => $vo['id'],
         'second_strokes' => $second_strokes,
@@ -121,3 +52,40 @@ foreach ($lists as $vo) {
     ]);
 }
 echo 'ok';
+
+function get_word_strokes($word)
+{
+    $word = Db::name('words')->where('word', $word)->find();
+    if (!empty($word)) {
+        $strokes = $word['strokes'];
+        switch ($word['radicals']) {
+            case '氵':
+                $strokes2 = $strokes + 1;
+                break;
+            case '忄':
+                $strokes2 = $strokes + 1;
+                break;
+            case '钅':
+                $strokes2 = $strokes + 3;
+                break;
+            case '艹':
+                $strokes2 = $strokes + 3;
+                break;
+            case '辶':
+                $strokes2 = $strokes + 4;
+                break;
+            case '扌':
+                $strokes2 = $strokes + 1;
+                break;
+            case '王':
+                $strokes2 = $strokes + 1;
+                break;
+            default:
+                $strokes2 = $strokes;
+                break;
+        }
+    } else {
+        $strokes2 = $strokes = 0;
+    }
+    return [$strokes, $strokes2];
+}
