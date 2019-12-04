@@ -18,7 +18,7 @@ Db::setConfig([
             // 用户名
             'username' => 'root',
             // 密码
-            'password'       => 'root',
+            'password' => 'root',
             // 数据库名
             'database' => 'myphp',
             // 数据库编码默认采用utf8
@@ -31,7 +31,7 @@ Db::setConfig([
     ],
 ]);
 
-$lists = Db::name('names')->where('name', 'like', '何%')->select();//->where('buyiju_dafen', 0)
+$lists = Db::name('names')->where('name', 'like', '何%')->select(); //->where('buyiju_dafen', 0)
 foreach ($lists as $vo) {
     $second_word = mb_substr($vo['name'], 1, 1);
     $third_word = mb_substr($vo['name'], 2, 1);
