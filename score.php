@@ -1,9 +1,11 @@
 <?php
+
 date_default_timezone_set('Asia/Shanghai');
 require __DIR__ . '/vendor/autoload.php';
 require 'db.php';
 
 use Goutte\Client;
+use think\facade\Db;
 
 $client = new Client();
 $lists = Db::name('names')->where('name', 'like', '何%')->where('buyiju_dafen', 0)->select();

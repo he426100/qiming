@@ -1,7 +1,10 @@
 <?php
+
 date_default_timezone_set('Asia/Shanghai');
 require __DIR__ . '/vendor/autoload.php';
 require 'db.php';
+
+use think\facade\Db;
 
 $lists = Db::name('names')->where('name', 'like', '何%')->select();
 foreach ($lists as $vo) {
