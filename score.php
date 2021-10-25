@@ -21,6 +21,7 @@ foreach ($lists as $vo) {
                 ]);
             }
         }
-    } catch (\Exception $e) { }
+    } catch (\Exception $e) {
+    }
 }
 echo 'ok';
