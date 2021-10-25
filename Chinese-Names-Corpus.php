@@ -13,8 +13,11 @@ $file = fopen("Chinese_Names_Corpus_Gender（120W）.txt", "r") or exit("Unable 
 //feof() check if file read end EOF
 while (!feof($file)) {
     $row = trim(fgets($file));
-    if (++$i <= 832582) {
+    if (++$i <= 233892) {
         continue;
+    }
+    if ($i > 246805) {
+        break;
     }
     $data = explode(',', $row);
     if (count($data) != 2 || !in_array($data[1], $sex)) {

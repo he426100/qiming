@@ -12,17 +12,19 @@ foreach ($lists as $vo) {
     $third_word = mb_substr($vo['name'], 2, 1);
 
     //第二个字
-    list($second_strokes, $second_strokes2) = get_word_strokes($second_word);
+    list($second_radicals, $second_strokes, $second_strokes2) = get_word_strokes($second_word);
     //第三个字
     if ($third_word == $second_word) {
-        list($third_strokes, $third_strokes2) = [$second_strokes, $second_strokes2];
+        list($third_radicals, $third_strokes, $third_strokes2) = [$second_radicals, $second_strokes, $second_strokes2];
     } else {
-        list($third_strokes, $third_strokes2) = get_word_strokes($third_word);
+        list($third_radicals, $third_strokes, $third_strokes2) = get_word_strokes($third_word);
     }
     Db::name('names')->update([
         'id' => $vo['id'],
+        'second_radicals' => $second_radicals ?: '',
         'second_strokes' => $second_strokes,
         'second_strokes2' => $second_strokes2,
+        'third_radicals' => $third_radicals ?: '',
         'third_strokes' => $third_strokes,
         'third_strokes2' => $third_strokes2,
     ]);
@@ -63,5 +65,5 @@ function get_word_strokes($word)
     } else {
         $strokes2 = $strokes = 0;
     }
-    return [$strokes, $strokes2];
+    return [$word['radicals'], $strokes, $strokes2];
 }
